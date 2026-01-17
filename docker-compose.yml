@@ -1,0 +1,25 @@
+services:
+  goker-bc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: goker-bc
+    volumes:
+      - ./src:/app/src
+      - ./test:/app/test
+      - ./script:/app/script
+    networks:
+      - goker-network
+
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:latest
+    container_name: goker-anvil
+    command: ["anvil", "--host", "0.0.0.0"]
+    ports:
+      - "8545:8545"
+    networks:
+      - goker-network
+
+networks:
+  goker-network:
+    external: true
